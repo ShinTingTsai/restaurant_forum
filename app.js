@@ -6,8 +6,14 @@ const session = require('express-session')
 const passport = require('./config/passport')
 const methodOverride = require('method-override')
 
+// 判斷在正式/開發環境，開發環境才讀取.env
+// Heroku會自動注入NODE_ENV=production
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 app.engine('handlebars', handlebars({defaultLayout: 'main'}))
 app.set('view engine', 'handlebars')

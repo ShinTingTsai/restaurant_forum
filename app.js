@@ -1,5 +1,6 @@
 const express = require('express')
 const handlebars = require('express-handlebars')
+const hbs = require('handlebars')
 const bodyParser = require('body-parser')
 const flash = require('connect-flash')
 const session = require('express-session')
@@ -31,6 +32,11 @@ app.use((req, res, next) => {
   res.locals.error_messages = req.flash('error_messages')
   res.locals.user = req.user // pass usr info to front
   next()
+})
+
+// 用於網頁判斷兩個參數是否相等
+hbs.registerHelper('equal', function (item1, item2, options) {
+  return (item1 === item2) ? options.fn(this) : options.inverse(this)
 })
 
 app.listen(port, () => {

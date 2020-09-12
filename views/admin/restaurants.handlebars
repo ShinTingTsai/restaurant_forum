@@ -1,7 +1,7 @@
 <h1>餐廳後台</h1>
 
 <a href='/admin/restaurants/create'>
-  <button type="button" class="btn btn-primary">New Restaurant</button>
+  <button type="button" class="btn btn-primary">Create Restaurant</button>
 </a>
 
 <br />
@@ -20,19 +20,15 @@
     <tr>
       <th scope="row">{{this.id}}</th>
       <td>{{this.name}}</td>
-      <td>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}">
-            Show
-          </a>
-        </button>
-        <button type="button" class="btn btn-link">
-          <a href="/admin/restaurants/{{this.id}}/edit">
-            Edit
-          </a>
-        </button>
-        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link">Delete</button>
+      <td>     
+        <a class="btn btn-primary" href="/admin/restaurants/{{this.id}}">
+          Show
+        </a>
+        <a class="btn btn-primary" href="/admin/restaurants/{{this.id}}/edit">
+          Edit
+        </a>
+        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;" onsubmit="return confirm('確定要刪除嗎？')">
+          <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </td>
     </tr>

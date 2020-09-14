@@ -16,7 +16,7 @@ module.exports = (app, passport) => {
       if (req.user.isAdmin) { return next() }
       return res.redirect('/')
     }
-    res.redirect('signin')
+    res.redirect('/signin')
   }
   // Read
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))

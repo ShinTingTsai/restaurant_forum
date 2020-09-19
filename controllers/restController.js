@@ -1,9 +1,6 @@
 const db = require('../models')
+const { Restaurant, Category, Comment, User } = db
 const restaurant = require('../models/restaurant')
-const Restaurant = db.Restaurant
-const Category = db.Category
-const Comment = db.Comment
-const User = db.User
 const pageLimit = 10
 
 let restController = {
@@ -33,6 +30,7 @@ let restController = {
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
         isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
+        isLiked: req.user.LikedRestaurants.map(d => d.id).includes(r.id),
         // 透過restaurant關聯取得category table 的name的值
         categoryName: r.dataValues.Category.name
       }))
@@ -57,6 +55,7 @@ let restController = {
       include: [
         Category,
         { model: User, as: 'FavoritedUsers' },
+        { model: User, as: 'LikedUsers' },
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
@@ -65,9 +64,11 @@ let restController = {
       })
     }).then(restaurant => {
       const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
+      const isLiked = restaurant.LikedUsers.map(d => d.id).includes(req.user.id)
       return res.render('restaurant', {
         restaurant: restaurant.toJSON(),
-        isFavorited: isFavorited
+        isFavorited: isFavorited,
+        isLiked: isLiked
       })
     })
   },

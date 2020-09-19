@@ -32,6 +32,7 @@ let restController = {
       const data = result.rows.map(r => ({
         ...r.dataValues,
         description: r.dataValues.description.substring(0, 50),
+        isFavorited: req.user.FavoritedRestaurants.map(d => d.id).includes(r.id),
         // 透過restaurant關聯取得category table 的name的值
         categoryName: r.dataValues.Category.name
       }))
@@ -55,6 +56,7 @@ let restController = {
     return Restaurant.findByPk(req.params.id, {
       include: [
         Category,
+        { model: User, as: 'FavoritedUsers' },
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
@@ -62,8 +64,10 @@ let restController = {
         viewCounts: restaurant.toJSON().viewCounts + 1
       })
     }).then(restaurant => {
+      const isFavorited = restaurant.FavoritedUsers.map(d => d.id).includes(req.user.id)
       return res.render('restaurant', {
-        restaurant: restaurant.toJSON()
+        restaurant: restaurant.toJSON(),
+        isFavorited: isFavorited
       })
     })
   },

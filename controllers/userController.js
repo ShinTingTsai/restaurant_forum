@@ -1,8 +1,11 @@
 const bcrypt = require('bcryptjs')
 const db = require('../models')
+const Restaurant = db.Restaurant
+const Comment = db.Comment
 const user = require('../models/user')
 const User = db.User
 const imgur = require('imgur-node-api')
+const restaurant = require('../models/restaurant')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
 
 const userController = {
@@ -55,10 +58,20 @@ const userController = {
     if (Number(req.params.id) === req.user.id) isOwner = true
     return User.findByPk(req.params.id).then(userChecked => {
       if (userChecked.image === null) userChecked.image = 'https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png'
-      return res.render('profile', {
-        isOwner: isOwner,
-        userChecked: userChecked.toJSON(),
-        user: req.user
+      Comment.findAll({
+        where: { UserId: req.params.id },
+        attributes: ['RestaurantId'],
+        group: ['RestaurantId'],
+        include: [Restaurant],
+        raw: true,
+        nest: true
+      }).then(restaurants => {
+        return res.render('profile', {
+          isOwner: isOwner,
+          userChecked: userChecked.toJSON(),
+          user: req.user,
+          restaurants: restaurants
+        })
       })
     })
   },

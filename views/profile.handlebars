@@ -1,11 +1,11 @@
-<div class="row justify-content-center">
+
   <div class="card mb-4 shadow-sm">
     {{!-- no-gutters 拿掉欄與欄間距 --}}
     <div class="row no-gutters">
-      <div class="">
+      <div class="col-4">
         <img src="{{userChecked.image}}" class="card-img" alt="Avatar" style="width: 240px; height: 180px;">
       </div>
-      <div class="">
+      <div class="col-8">
         <div class="card-body">
           <p class="card-text"> {{userChecked.name}}</p>
           <p class="card-text"> {{userChecked.email}}</p>
@@ -18,4 +18,16 @@
       </div>
     </div>
   </div>
-</div>
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header">
+      {{restaurants.length}} 已評論餐廳
+    </div>
+    <div class="card-body flex-wrap justify-content-start">
+      {{#each restaurants}}
+      <a href="/restaurants/{{this.Restaurant.id}}">
+        <img class="mx-2 my-2 rounded" src="{{this.Restaurant.image}}" class="card-img" alt="Avatar"
+          style="width: 120px; height: 90px;">
+      </a>
+      {{/each}}
+    </div>
+  </div>

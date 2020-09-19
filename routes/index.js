@@ -20,6 +20,18 @@ module.exports = (app, passport) => {
     }
     res.redirect('/signin')
   }
+  const isOwner = (req, res, next) => {
+    if (Number(req.params.id) === req.user.id) {
+      return next()
+    }
+    req.flash('error_messages', 'You are not authorized to do the action.')
+    return res.redirect(`/users/${req.user.id}`)
+  }
+  // Profile
+  app.get('/users/:id', authenticated, userController.getUser)
+  app.get('/users/:id/edit', authenticated, isOwner, userController.editUser)
+  app.put('/users/:id', authenticated, isOwner, upload.single('image'), userController.putUser)
+
   // Comment
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)

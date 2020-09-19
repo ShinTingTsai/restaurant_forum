@@ -1,0 +1,21 @@
+<div class="row justify-content-center">
+  <div class="card mb-4 shadow-sm">
+    {{!-- no-gutters 拿掉欄與欄間距 --}}
+    <div class="row no-gutters">
+      <div class="">
+        <img src="{{userChecked.image}}" class="card-img" alt="Avatar" style="width: 240px; height: 180px;">
+      </div>
+      <div class="">
+        <div class="card-body">
+          <p class="card-text"> {{userChecked.name}}</p>
+          <p class="card-text"> {{userChecked.email}}</p>
+          {{#if isOwner}}
+          <p class="card-text">
+            <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit</a>
+          </p>
+          {{/if}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

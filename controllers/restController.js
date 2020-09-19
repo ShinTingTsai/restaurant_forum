@@ -1,4 +1,5 @@
 const db = require('../models')
+const restaurant = require('../models/restaurant')
 const Restaurant = db.Restaurant
 const Category = db.Category
 const Comment = db.Comment
@@ -57,7 +58,6 @@ let restController = {
         { model: Comment, include: [User] }
       ]
     }).then(restaurant => {
-      // console.log(restaurant.Comments[0].dataValues)
       return res.render('restaurant', {
         restaurant: restaurant.toJSON()
       })
@@ -82,6 +82,20 @@ let restController = {
           restaurants: restaurants,
           comments: comments
         })
+      })
+    })
+  },
+  getDashboard: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+      include: [
+        Category,
+        Comment
+      ]
+    }).then(restaurant => {
+      const commentCount = restaurant.Comments.length ? restaurant.Comments.length : 0
+      return res.render('dashboard', {
+        restaurant: restaurant.toJSON(),
+        commentCount: commentCount
       })
     })
   }

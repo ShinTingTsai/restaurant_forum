@@ -1,33 +1,107 @@
 
-  <div class="card mb-4 shadow-sm">
-    {{!-- no-gutters 拿掉欄與欄間距 --}}
-    <div class="row no-gutters">
-      <div class="col-4">
-        <img src="{{userChecked.image}}" class="card-img" alt="Avatar" style="width: 240px; height: 180px;">
+<div class="card mb-4 shadow-sm">
+  {{!-- no-gutters 拿掉欄與欄間距 --}}
+  <div class="row no-gutters">
+    <div class="col-4">
+      <img src="{{userChecked.image}}" class="card-img" alt="Avatar" style="width: 360px; height: 270px;">
+    </div>
+    <div class="col-8">
+      <div class="card-body">
+        <p class="card-text"> {{userChecked.name}}</p>
+        <p class="card-text"> {{userChecked.email}}</p>
+        <p class="card-text"> {{restaurants.length}} 已評論餐廳 </br>
+          {{favoritedRestaurants.length}} 收藏的餐廳 </br>
+          {{followings.length}} followings (追蹤者)</br>
+          {{followers.length}} followers (追隨者)</p>
+        {{#if this.isFollowed }}
+        <form action="/following/{{userChecked.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit" class="btn btn-danger">取消追蹤</button></form>
+        {{else}}
+        <form action="/following/{{userChecked.id}}" method="POST" style="display: contents;"><button type="submit" class="btn btn-primary">追蹤</button></form>
+        {{/if}}
+        {{#if isOwner}}
+          <a class="btn btn-primary" href="/users/{{user.id}}/edit">編輯</a>
+        {{/if}}
       </div>
-      <div class="col-8">
-        <div class="card-body">
-          <p class="card-text"> {{userChecked.name}}</p>
-          <p class="card-text"> {{userChecked.email}}</p>
-          {{#if isOwner}}
-          <p class="card-text">
-            <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit</a>
-          </p>
-          {{/if}}
+    </div>
+  </div>
+</div>
+
+<div class="row my-5">
+  <div class="col">
+      <div class="card">
+        <div class="card-header">
+          {{followings.length}} followings (追蹤者)
+        </div>
+        <div class="card-body flex-wrap justify-content-start">
+          {{#each followings}}
+          <a href="/restaurants/{{this.id}}">
+            <img class="mx-2 rounded" 
+            {{#if this.image}} src="{{this.image}}" 
+            {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"
+            {{/if}}
+            class="card-img" alt="Avatar" style="width: 100px; height: 75px;">
+          </a>
+          {{/each}}
         </div>
       </div>
+  </div>
+  <div class="col">
+      <div class="card">
+        <div class="card-header">
+          {{restaurants.length}} 已評論餐廳
+        </div>
+        <div class="card-body flex-wrap justify-content-start">
+          {{#each restaurants}}
+          <a href="/restaurants/{{this.Restaurant.id}}">
+            <img class="mx-2 rounded"
+            {{#if this.Restaurant.image}} src="{{this.Restaurant.image}}" 
+            {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"
+            {{/if}}
+            class="card-img" alt="Avatar" style="width: 100px; height: 75px;">
+          </a>
+          {{/each}}
+        </div>
+      </div>
+  </div>
+</div>
+<div class="row my-5">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        {{followers.length}} followers (追隨者)
+      </div>
+      <div class="card-body flex-wrap justify-content-start">
+        {{#each followers}}
+        <a href="/restaurants/{{this.id}}">
+          <img class="mx-2 rounded"
+            {{#if this.image}} src="{{this.image}}"
+            {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"
+            {{/if}}
+           class="card-img" alt="Avatar" style="width: 100px; height: 75px;">
+        </a>
+        {{/each}}
+      </div>
     </div>
   </div>
-  <div class="card mb-4 shadow-sm">
-    <div class="card-header">
-      {{restaurants.length}} 已評論餐廳
-    </div>
-    <div class="card-body flex-wrap justify-content-start">
-      {{#each restaurants}}
-      <a href="/restaurants/{{this.Restaurant.id}}">
-        <img class="mx-2 my-2 rounded" src="{{this.Restaurant.image}}" class="card-img" alt="Avatar"
-          style="width: 120px; height: 90px;">
-      </a>
-      {{/each}}
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        {{favoritedRestaurants.length}} 收藏的餐廳
+      </div>
+      <div class="card-body flex-wrap justify-content-start">
+        {{#each favoritedRestaurants}}
+        <a href="/restaurants/{{this.id}}">
+          <img class="mx-2 rounded"
+          {{#if this.image}} src="{{this.image}}"
+          {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"
+          {{/if}}
+          class="card-img" alt="Avatar" style="width: 100px; height: 75px;">
+        </a>
+        {{/each}}
+      </div>
     </div>
   </div>
+</div>
+
+
+

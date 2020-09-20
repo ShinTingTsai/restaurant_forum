@@ -49,7 +49,14 @@ const userController = {
   getUser: (req, res) => {
     let isOwner = false
     if (Number(req.params.id) === req.user.id) isOwner = true
-    return User.findByPk(req.params.id).then(userChecked => {
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' },
+        { model: Restaurant, as: 'FavoritedRestaurants'}
+      ]
+    }).then(userChecked => {
+      // check image
       if (userChecked.image === null) userChecked.image = 'https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png'
       Comment.findAll({
         where: { UserId: req.params.id },
@@ -63,7 +70,11 @@ const userController = {
           isOwner: isOwner,
           userChecked: userChecked.toJSON(),
           user: req.user,
-          restaurants: restaurants
+          restaurants,
+          followers: userChecked.toJSON().Followers,
+          followings: userChecked.toJSON().Followings,
+          favoritedRestaurants: userChecked.toJSON().FavoritedRestaurants,
+          isFollowed: req.user.Followings.map(d => d.id).includes(userChecked.id)
         })
       })
     })

@@ -34,7 +34,7 @@
         </div>
         <div class="card-body flex-wrap justify-content-start">
           {{#each followings}}
-          <a href="/restaurants/{{this.id}}">
+          <a href="/users/{{this.id}}">
             <img class="mx-2 rounded" 
             {{#if this.image}} src="{{this.image}}" 
             {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"
@@ -72,7 +72,7 @@
       </div>
       <div class="card-body flex-wrap justify-content-start">
         {{#each followers}}
-        <a href="/restaurants/{{this.id}}">
+        <a href="/users/{{this.id}}">
           <img class="mx-2 rounded"
             {{#if this.image}} src="{{this.image}}"
             {{else}} src="https://www.teknozeka.com/wp-content/uploads/2020/03/wp-header-logo-33.png"

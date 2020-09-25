@@ -13,10 +13,8 @@ const adminController = {
     })
   },
   getRestaurant: (req, res, callback) => {
-    return Restaurant.findByPk(req.params.id, { include: [Category] }).then(restaurant => {
-      return res.render('admin/restaurant', {
-        restaurant: restaurant.toJSON()
-      })
+    adminService.getRestaurant(req, res, (data) => {
+      return res.render('admin/restaurant', data)
     })
   },
   createRestaurant: (req, res) => {

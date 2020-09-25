@@ -63,6 +63,7 @@ npm run dev
 Ａdmin
 - email: root@example.com
 - password: 12345678
+
 User
 - email: user1@example.com
 - password: 12345678

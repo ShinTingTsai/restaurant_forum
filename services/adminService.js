@@ -4,12 +4,17 @@ const fs = require('fs')
 const restaurant = require('../models/restaurant')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
-const adminService = require('../services/adminService')
 
 const adminController = {
-  getRestaurants: (req, res) => {
-    adminService.getRestaurants(req, res, (data) => {
-      return res.render('admin/restaurants', data)
+  getRestaurants: (req, res, callback) => {
+    // 用{ raw: true }將資料轉換成ＪＳ原生物件
+    return Restaurant.findAll({
+      raw: true,
+      nest: true,
+      include: [Category]
+    }).then(restaurants => {
+      // return res.render('admin/restaurants', { restaurants: restaurants })
+      callback({ restaurants: restaurants })
     })
   },
   getRestaurant: (req, res, callback) => {

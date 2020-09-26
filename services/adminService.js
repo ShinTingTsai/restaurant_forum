@@ -134,7 +134,7 @@ const adminController = {
       .then((restaurant) => {
         restaurant.destroy()
           .then((restaurant) => {
-            callback({ status: '200', message: 'success' })
+            callback({ status: 'success', message: 'success' })
           })
       })
   },

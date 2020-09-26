@@ -45,12 +45,12 @@ let categoryController = {
         })
     }
   },
-  deleteCategory: (req, res) => {
+  deleteCategory: (req, res, callback) => {
     return Category.findByPk(req.params.id)
       .then((category) => {
         category.destroy()
           .then((category) => {
-            res.redirect('/admin/categories')
+            callback({ status: 'success', message: 'category was successfully deleted' })
           })
       })
   }

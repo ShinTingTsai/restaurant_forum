@@ -20,17 +20,15 @@ let categoryController = {
       }
     })
   },
-  postCategory: (req, res) => {
+  postCategory: (req, res, callback) => {
     if (!req.body.name) {
-      req.flash('error_messages', 'name didn\'t exist')
-      return res.redirect('back')
+      return callback({ status: 'error', message: "name didn\'t exist" })
     } else {
       return Category.create({
         name: req.body.name
       })
         .then((category) => {
-          res.redirect('/admin/categories')
-          // res.redirect('back') 回到原本的頁面
+          callback({ status: 'success', message: 'category was successfully created' })
         })
     }
   },

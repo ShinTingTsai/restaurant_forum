@@ -1,3 +1,4 @@
+const { date } = require('faker')
 const db = require('../models')
 const Category = db.Category
 const categoryService = require('../services/categoryServices')
@@ -9,18 +10,14 @@ let categoryController = {
     })
   },
   postCategory: (req, res) => {
-    if (!req.body.name) {
-      req.flash('error_messages', 'name didn\'t exist')
-      return res.redirect('back')
-    } else {
-      return Category.create({
-        name: req.body.name
-      })
-        .then((category) => {
-          res.redirect('/admin/categories')
-          // res.redirect('back') 回到原本的頁面
-        })
-    }
+    categoryService.postCategory(req, res, (data) => {
+      if (data.status === 'error'){
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
+      }
+      req.flash('success_messages', data.message)
+      res.redirect('/admin/categories')
+    })
   },
   putCategory: (req, res) => {
     if (!req.body.name) {

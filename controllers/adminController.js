@@ -12,19 +12,14 @@ const adminController = {
       return res.render('admin/restaurants', data)
     })
   },
-  getRestaurant: (req, res, callback) => {
+  getRestaurant: (req, res) => {
     adminService.getRestaurant(req, res, (data) => {
       return res.render('admin/restaurant', data)
     })
   },
   createRestaurant: (req, res) => {
-    Category.findAll({
-      raw: true,
-      nest: true
-    }).then(categories => {
-      return res.render('admin/create', {
-        categories: categories
-      })
+    adminService.createRestaurant(req, res, (data) => {
+      return res.render('admin/create', data)
     })
   },
   postRestaurant: (req, res) => {
@@ -68,23 +63,17 @@ const adminController = {
     })
   },
   getUsers: (req, res) => {
-    return User.findAll({ raw: true })
-      .then(users => {
-        return res.render('admin/users', { users: users })
-      })
-      .catch(err => console.log(err))
+    adminService.getUsers(req, res, (data) => {
+      return res.render('admin/users', data)
+    })
   },
   putUsers: (req, res) => {
-    const { id } = req.params
-    return User.findByPk(id)
-      .then(user => {
-        user.update({
-          isAdmin: !user.isAdmin
-        }).then((user) => {
-          req.flash('success_messages', 'Update success')
-          return res.redirect('/admin/users')
-        })
-      })
+    adminService.putUsers(req, res, (data) => {
+      if (data.status === 'success') {
+        req.flash('success_messages', data.message)
+        return res.redirect('/admin/users')
+      }
+    }).catch(err => console.log(err))
   }
 }
 

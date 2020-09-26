@@ -7,7 +7,7 @@ const fs = require('fs')
 const restaurant = require('../models/restaurant')
 
 
-const adminController = {
+const adminService = {
   getRestaurants: (req, res, callback) => {
     // 用{ raw: true }將資料轉換成ＪＳ原生物件
     return Restaurant.findAll({
@@ -15,28 +15,27 @@ const adminController = {
       nest: true,
       include: [Category]
     }).then(restaurants => {
-      // return res.render('admin/restaurants', { restaurants: restaurants })
       callback({ restaurants: restaurants })
     })
   },
   getRestaurant: (req, res, callback) => {
     return Restaurant.findByPk(
       req.params.id,
-      { include: [Category] }).then(restaurant => {
-      callback({ restaurant: restaurant })
-      // return res.render('admin/restaurant', {
-      //   restaurant: restaurant.toJSON()
-      // })
+      {
+        raw: true,
+        nest: true,
+        include: [Category] 
+      }).then(restaurant => {
+        callback({ restaurant: restaurant })
+      // callback({ restaurant: restaurant.toJSON() })
     })
   },
-  createRestaurant: (req, res) => {
+  createRestaurant: (req, res, callback) => {
     Category.findAll({
       raw: true,
       nest: true
     }).then(categories => {
-      return res.render('admin/create', {
-        categories: categories
-      })
+      callback({ categories: categories })
     })
   },
   postRestaurant: (req, res, callback) => {
@@ -70,7 +69,11 @@ const adminController = {
         CategoryId: req.body.categoryId
       })
         .then((restaurant) => {
-          callback({ status: 'success', message: 'restaurant was successfully created' })
+          callback({
+            status: 'success',
+            message: 'restaurant was successfully created',
+            restaurant: restaurant
+          })
         })
         .catch(err => console.log(err))
     }
@@ -138,25 +141,30 @@ const adminController = {
           })
       })
   },
-  getUsers: (req, res) => {
+  getUsers: (req, res, callback) => {
     return User.findAll({ raw: true })
       .then(users => {
-        return res.render('admin/users', { users: users })
+        callback({ users: users })
+        // return res.render('admin/users', { users: users })
       })
       .catch(err => console.log(err))
   },
-  putUsers: (req, res) => {
+  putUsers: (req, res, callback) => {
     const { id } = req.params
     return User.findByPk(id)
       .then(user => {
         user.update({
           isAdmin: !user.isAdmin
         }).then((user) => {
-          req.flash('success_messages', 'Update success')
-          return res.redirect('/admin/users')
+          callback({
+            status: 'success',
+            message: 'Update success'
+          })
+          // req.flash('success_messages', 'Update success')
+          // return res.redirect('/admin/users')
         })
       })
   }
 }
 
-module.exports = adminController
+module.exports = adminService

@@ -24,13 +24,16 @@ const authenticatedAdmin = (req, res, next) => {
 router.post('/signup', userController.signUp)
 router.post('/signin', userController.signIn)
 
-
 router.get('/admin/restaurants', authenticated, authenticatedAdmin, adminController.getRestaurants)
 router.get('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.getRestaurant)
 router.get('/admin/categories', authenticated, authenticatedAdmin, categoryController.getCategories)
 router.delete('/admin/restaurants/:id', authenticated, authenticatedAdmin, adminController.deleteRestaurant)
+router.get('/admin/restaurants/create', authenticated, authenticatedAdmin, adminController.createRestaurant)
 router.post('/admin/restaurants', authenticated, authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
 router.put('/admin/restaurants/:id', authenticated, authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
+
+router.get('/admin/users', authenticated, authenticatedAdmin, adminController.getUsers)
+router.put('/admin/users/:id', authenticated, authenticatedAdmin, adminController.putUsers)
 
 router.post('/admin/categories', authenticated, authenticatedAdmin, categoryController.postCategory)
 router.put('/admin/categories/:id', authenticated, authenticatedAdmin, categoryController.putCategory)

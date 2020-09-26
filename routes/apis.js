@@ -21,6 +21,7 @@ const authenticatedAdmin = (req, res, next) => {
 }
 
 // JWT signin
+router.post('/signup', userController.signUp)
 router.post('/signin', userController.signIn)
 
 
